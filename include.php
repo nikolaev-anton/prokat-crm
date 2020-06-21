@@ -27,8 +27,8 @@ function finish($text) {
   global $db_conection;
   log_error($text);
   $response_array = array("error" => true, "error_text" => $text);
-  echo json_encode($response_array);
-  mysqli_close($db_conection);
+  echo json_encode($response_array, JSON_UNESCAPED_UNICODE);
+  db_disconnect($db_conection);
   exit;
 }
 
