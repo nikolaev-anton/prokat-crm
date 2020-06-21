@@ -1,0 +1,4 @@
+1. select id,name from EMPLOYEES
+
+2. возвращаю результат
+json: ("error" => false, "employees":[{"id":"1","name":"Антон"},...])
