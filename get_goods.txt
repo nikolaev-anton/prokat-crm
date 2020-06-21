@@ -1,0 +1,4 @@
+1. select id,name from MODELS
+
+2. возвращаю результат
+json: ("error" => false, "goods" => [{"id":"1","name":"model1"},...])
