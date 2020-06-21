@@ -1,0 +1,4 @@
+1. select id,name from STATUS
+
+2. возвращаю результат
+json: ("error" => false, "statuses":[{"id":"0","name":"ожидает"},...])

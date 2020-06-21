@@ -1,4 +1,4 @@
-1. select id,name from EMPLOYEES
+1. select id,name from CHANNELS
 
 2. возвращаю результат
-json: ("error" => false, "employees":[{"id":"1","name":"Антон"},...])
+json: ("error" => false, "channels":[{"id":"1","name":"сайт"},...])
