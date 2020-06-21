@@ -1,0 +1,37 @@
+1. берет json из GET-запроса
+
+2. преобразует в array
+
+3. поверхностная проверка request - реализовать нормальную проверку значений
+
+4. поиск клиента по одному из 3 телефонов или создание нового
+
+5. создание заказа в таблице ORDERS
+insert into ORDERS
+status_id,
+comment, 
+client_id, 
+created,
+begin, 
+end, 
+delivery_address_to, 
+delivery_address_from, 
+total_amount, 
+total_deposit, 
+giver_id, 
+taker_id, 
+give_stock_id, 
+take_stock_id
+)
+
+6. состав заказа - в таблицу MODELS_TO_ORDERS
+insert into MODELS_TO_ORDERS( 
+order_id, 
+model_id,
+count, 
+price, 
+deposit 
+)
+
+7. возвращаю результат
+json: ("error" => false, "order_id" => $order_id)

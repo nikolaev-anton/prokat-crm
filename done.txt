@@ -1,0 +1,16 @@
+реализованы:
+create_order.php - полностью
+get_order_details.php - выводить текстовые названия моделей, giver/taker, stocks
+list_orders.php - полностью (оставил только номера заказов)
+list_orders_with_details.php - полностью
+give_order.php - добавить ITEMS_TO_ORDERS, менять begin
+take_order.php - менять end
+
+
+create_order - создание заказа
+get_order_details - вся информация о заказе по ID
+list_orders - только список заказов по условиям поиска
+list_orders_with_details - вся информация о заказах по условиям поиска
+give_order - выдать(клиенту) заказ по ID
+take_order - принять(вернуть) заказ по ID
+get_price - получить стоимость аренды и залог по модели товара и сроку

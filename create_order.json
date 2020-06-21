@@ -1,0 +1,30 @@
+{
+	"name": "Anton",
+	"phone1": "8999-123-45-67",
+	"phone2": null,
+	"phone3": null,
+	"begin": "01.01.2019 09:00:00",
+	"end": "02.01.2019 10:00:00",
+	"delivery_address_to": "sdl,sl;d",
+	"delivery_address_from": "sdfsd",
+	"total_amount": 1300,
+	"total_deposit": 2500,
+	"goods": [{
+			"model_id": 11,
+			"count": 1,
+			"price": 1000,
+			"deposit": 2000
+		},
+		{
+			"model_id": 12,
+			"count": 2,
+			"price": 300,
+			"deposit": 500
+		}
+	],
+	"giver_id": 1,
+	"taker_id": 2,
+	"give_stock_id": 11,
+	"take_stock_id": 12,
+	"comment": "заказ1"
+}
