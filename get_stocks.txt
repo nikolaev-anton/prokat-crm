@@ -1,0 +1,4 @@
+1. select id,name from STOCKS
+
+2. возвращаю результат
+json: ("error" => false, "stocks":[{"id":"1","name":"Сокол"},...])
