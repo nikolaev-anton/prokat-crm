@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Order Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+        form {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        ul {
+            list-style-type: none;
+            margin: 10px 0;
+            padding: 0;
+        }
+        select,
+        input[type="text"],
+        input[type="tel"],
+        input[type="number"],
+        input[type="date"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="button"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="button"]:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <form action="https://prokat-palatok.ru/crm2/create_order.php" method="GET" id="form">
+        <ul id="form_ul">
+            <li>Name: <input type="text" name="name"></li>
+            <li>Phone1: <input type="tel" name="phone1" id="phone1" placeholder="+7 (___) ___-__-__"></li>
+            <li>Phone2: <input type="tel" name="phone2" id="phone2" placeholder="+7 (___) ___-__-__"></li>
+            <li>Phone3: <input type="tel" name="phone3" id="phone3" placeholder="+7 (___) ___-__-__"></li>
+            <li>Start Date: <input type="date" name="begin"></li>
+            <li>End Date: <input type="date" name="end"></li>
+            <li>Адрес доставки к клиенту: <input type="text" name="delivery_address_to"></li>
+            <li>Адрес доставки от клиента: <input type="text" name="delivery_address_from"></li>
+            <li>Склад выдачи: <input type="number" name="give_stock_id" min="1" step="1" value="1"></li>
+            <li>Кто выдает: <input type="number" name="giver_id" min="1" step="1" value="1"></li>
+            <li>Склад приемки: <input type="number" name="take_stock_id" min="1" step="1" value="1"></li>
+            <li>Кто принимает заказ: <input type="number" name="taker_id" min="1" step="1" value="1"></li>
+            <label for="goods_li">Товары:</label><li id="goods_li"/></li>
+            <li><input type="button" value="Submit Form" onclick="submitForm()"></li>
+        </ul>
+    </form>
+    <script type="text/javascript" src="submit_form.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+    <script> $(document).ready(function() { $('#phone1').inputmask({ mask: '+7 (999) 999-99-99', placeholder: '_'}); }); </script>
+    <script> $(document).ready(function() { $('#phone2').inputmask({ mask: '+7 (999) 999-99-99', placeholder: '_'}); }); </script>
+    <script> $(document).ready(function() { $('#phone3').inputmask({ mask: '+7 (999) 999-99-99', placeholder: '_'}); }); </script>
+
+<script>
+// создание элемента SELECT по выдаче товаров из MODELS и их id
+fetch('https://prokat-palatok.ru/crm2/get_goods.php')
+  .then(response => response.json())
+  .then(data => {
+const jsonData = data;
+const li = document.getElementById('goods_li');
+const selectElement = document.createElement('select');
+selectElement.id = 'goods';
+const defaultOption = document.createElement('option');
+defaultOption.text = 'Выберите товар';
+defaultOption.value = '';
+selectElement.add(defaultOption);
+jsonData.goods.forEach(item => {
+  const optionElement = document.createElement('option');
+  optionElement.value = item.id;
+  optionElement.text = item.name;
+  selectElement.appendChild(optionElement);
+});
+
+li.appendChild(selectElement);
+const inputElement = document.createElement('input');
+inputElement.type = 'number';
+inputElement.id = 'good_count_1';
+li.appendChild(inputElement);
+
+  })
+  .catch(error => console.error('Error:', error));
+</script>
+
+    <p id="output"></p>
+</body>
+</html>
