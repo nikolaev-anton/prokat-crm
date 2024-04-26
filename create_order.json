@@ -10,13 +10,13 @@
 	"total_amount": 1300,
 	"total_deposit": 2500,
 	"goods": [{
-			"model_id": 11,
+			"model_id": 1,
 			"count": 1,
 			"price": 1000,
 			"deposit": 2000
 		},
 		{
-			"model_id": 12,
+			"model_id": 2,
 			"count": 2,
 			"price": 300,
 			"deposit": 500
@@ -24,7 +24,13 @@
 	],
 	"giver_id": 1,
 	"taker_id": 2,
-	"give_stock_id": 11,
-	"take_stock_id": 12,
+	"give_stock_id": 1,
+	"take_stock_id": 2,
 	"comment": "заказ1"
 }
+
+// RESULTS:
+
+{"error":false,"order_id":20}
+
+{"error":true,"error_text":"example error"}
