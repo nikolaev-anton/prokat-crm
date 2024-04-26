@@ -29,6 +29,11 @@ foreach(array_keys($request) as $key)
   }
 
 //поиск клиента или создание нового
+if(empty($request["phone1"]) && empty($request["phone2"]) && empty($request["phone3"]))
+  {
+  finish("find/create client failed - phones are empty");
+  }
+
 $client_id = get_client_by_phone($request["phone1"]);
 if(empty($client_id))
   {
@@ -44,47 +49,37 @@ if(empty($client_id))
   };
 if(empty($client_id))
   {
-  finish("create client failed");
+  finish("find/create client failed");
   }
 
- 
-$sql = "insert into ORDERS( 
-status_id,
-comment, 
-client_id, 
-created,
-begin, 
-end, 
-delivery_address_to, 
-delivery_address_from, 
-total_amount, 
-total_deposit, 
-giver_id, 
-taker_id, 
-give_stock_id, 
-take_stock_id
-)
-values
-(".
-0
-. ", '" . $request["comment"] . "'"
-. ", " . $client_id
-. ", SYSDATE()" 
-. ", STR_TO_DATE('" . $request["begin"] . "', '%d.%m.%Y %H:%i:%s')"
-. ", STR_TO_DATE('" . $request["end"] . "', '%d.%m.%Y %H:%i:%s')"
-. ", '" . $request["delivery_address_to"] . "'"
-. ", '" . $request["delivery_address_from"] . "'"
-. ", " . $request["total_amount"]
-. ", " . $request["total_deposit"]
-. ", " . $request["giver_id"]
-. ", " . $request["taker_id"]
-. ", " . $request["give_stock_id"]
-. ", " . $request["take_stock_id"]
-. ")";
-  
-//echo $sql."<BR><BR>";  
 
 //создание заказа в таблице ORDERS
+$request_copy = $request;
+$request_copy["client_id"] = $client_id;
+// defaults
+if(empty($request_copy["giver_id"])) {$request_copy["giver_id"] = 1;}
+if(empty($request_copy["taker_id"])) {$request_copy["taker_id"] = 1;}
+if(empty($request_copy["give_stock_id"])) {$request_copy["give_stock_id"] = 1;}
+if(empty($request_copy["take_stock_id"])) {$request_copy["take_stock_id"] = 1;}
+
+$columns = array();
+$values = array();
+// поля из входящего JSON, которые можно как есть пихать в БД
+$ORDERS_keys = array("comment", "client_id", "begin", "end", "delivery_address_to", "delivery_address_from", "total_amount", "total_deposit", "giver_id", "taker_id", "give_stock_id", "take_stock_id");
+foreach ($request_copy as $key => $value) 
+  {
+//log_error($key."=".$value);
+  if (in_array($key, $ORDERS_keys)) 
+    {
+    $columns[] = $key;
+    $values[] = $value;
+    }
+  }
+
+$sql = "INSERT INTO ORDERS (".implode(", ", $columns).") VALUES ('".implode("', '", $values)."')";
+
+//log_error($sql);
+
 $result = mysqli_query($db_conection, $sql);
 if (!$result) 
   {
@@ -98,6 +93,7 @@ if (!$order_id)
   finish("get order_id error: ". $key ." ". mysqli_sqlstate($db_conection) . mysqli_error($db_conection));
   };
 
+//состав заказа - в таблицу MODELS_TO_ORDERS
 foreach($request["goods"] as $good)
 	{
 	$sql = "insert into MODELS_TO_ORDERS( 
@@ -116,7 +112,6 @@ foreach($request["goods"] as $good)
 	. ", " . $good["deposit"]
 	. ")";
 	  
-	//состав заказа - в таблицу MODELS_TO_ORDERS
 	$result = mysqli_query($db_conection, $sql);
 	if (!$result) 
 	  {
@@ -130,6 +125,7 @@ mysqli_close($db_conection);
 $response_array = array("error" => false, "order_id" => $order_id);
 echo json_encode($response_array);
 
+log_error(json_encode($response_array));
 
 
 ?>
