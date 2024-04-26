@@ -48,9 +48,14 @@ function nvl(&$var, $default = "") {
 
 function get_client_by_phone($phone) {
 	global $db_conection;
+	// передали пустой телефон - возвращаем "ничего"
+	if(empty($phone)) 
+		{
+		return "";
+		}
 
 	$sql = "select id from CLIENTS where phone1='".$phone."' or phone2='".$phone."' or phone3='".$phone."'";
-	
+
 	$result = mysqli_query($db_conection, $sql);
 	if (!$result) 
 	  {
