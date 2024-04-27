@@ -1,10 +1,15 @@
 #goods_li select {
-    width: 40%;
+    width: 30%;
     display: inline-block;
 }
 
 #goods_li input[type="number"] {
     width: 20%;
+    display: inline-block;
+}
+
+#goods_li buttin {
+    width: 10%;
     display: inline-block;
 }
 
