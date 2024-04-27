@@ -95,7 +95,7 @@ if (!$order_id)
 
 //log_error(implode('|',$request));	  
 $request_copy = $request;
-log_error(json_encode($request_copy));
+//log_error(json_encode($request_copy));
 //log_error(json_encode($request_copy["goods"]));
 //log_error(implode('|',$request_copy["goods"]));	  
 
@@ -107,10 +107,10 @@ $MODELS_TO_ORDERS_keys = array("model_id", "count", "price", "deposit");
 log_error(var_dump($request_copy["goods"]));
 foreach ($request_copy["goods"] as $good) 
   {
-log_error(var_dump($good));
+//log_error(var_dump($good));
   foreach ($good as $key => $value) 
     {
-log_error($key."=".$value);
+//log_error($key."=".$value);
     if (in_array($key, $MODELS_TO_ORDERS_keys)) 
       {
       $columns[] = $key;
@@ -124,7 +124,7 @@ $values[] = $order_id;
 
 $sql = "INSERT INTO MODELS_TO_ORDERS (".implode(", ", $columns).") VALUES ('".implode("', '", $values)."')";
 
-log_error($sql);
+//log_error($sql);
 
 $result = mysqli_query($db_conection, $sql);
 if (!$result) 
