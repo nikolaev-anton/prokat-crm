@@ -66,7 +66,7 @@ fetch(url, {
 
 
 
-function create_goods_select_inputs() {
+function create_goods_select_inputs(i) {
 // создание элемента SELECT по выдаче товаров из MODELS и их id
 fetch('https://prokat-palatok.ru/crm2/get_goods.php')
   .then(response => response.json())
@@ -74,7 +74,7 @@ fetch('https://prokat-palatok.ru/crm2/get_goods.php')
 const jsonData = data;
 const li = document.getElementById('goods_li');
 const selectElement = document.createElement('select');
-selectElement.id = 'good_1';
+selectElement.id = 'good_${i}';
 const defaultOption = document.createElement('option');
 defaultOption.text = 'Выберите товар';
 defaultOption.value = '';
@@ -85,26 +85,26 @@ jsonData.goods.forEach(item => {
   optionElement.text = item.name;
   selectElement.appendChild(optionElement);
 });
-
 li.appendChild(selectElement);
+
 // количество этих товаров в заказе
 const good_count_input_element = document.createElement('input');
 good_count_input_element.type = 'number';
-good_count_input_element.id = 'good_count_1';
+good_count_input_element.id = 'good_count_${i}';
 good_count_input_element.placeholder="Кол-во"
 li.appendChild(good_count_input_element);
 
 // сумма аренды по этим товарам
 const good_price_input_element = document.createElement('input');
 good_price_input_element.type = 'number';
-good_price_input_element.id = 'good_price_1';
+good_price_input_element.id = 'good_price_${i}';
 good_price_input_element.placeholder="Аренда"
 li.appendChild(good_price_input_element);
 
 // количество этих товаров в заказе
 const good_deposit_input_element = document.createElement('input');
 good_deposit_input_element.type = 'number';
-good_deposit_input_element.id = 'good_deposit_1';
+good_deposit_input_element.id = 'good_deposit_${i}';
 good_deposit_input_element.placeholder="Залог"
 li.appendChild(good_deposit_input_element);
 
