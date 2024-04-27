@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Order Form</title>
+<link rel="stylesheet" type="text/css" href="create_order_form.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,7 +58,7 @@
     <form action="https://prokat-palatok.ru/crm2/create_order.php" method="GET" id="form">
         <ul id="form_ul">
             <li>Name: <input type="text" name="name"></li>
-            <li>Phone1: <input type="tel" name="phone1" id="phone1" placeholder="+7 (___) ___-__-__"></li>
+            <li>Phone1: <input type="tel" name="phone1" id="phone1" placeholder="+7 (___) ___-__-__" value="+74957777777"></li>
             <li>Phone2: <input type="tel" name="phone2" id="phone2" placeholder="+7 (___) ___-__-__"></li>
             <li>Phone3: <input type="tel" name="phone3" id="phone3" placeholder="+7 (___) ___-__-__"></li>
             <li>Start Date: <input type="date" name="begin"></li>
@@ -87,7 +88,7 @@ fetch('https://prokat-palatok.ru/crm2/get_goods.php')
 const jsonData = data;
 const li = document.getElementById('goods_li');
 const selectElement = document.createElement('select');
-selectElement.id = 'goods';
+selectElement.id = 'good_1';
 const defaultOption = document.createElement('option');
 defaultOption.text = 'Выберите товар';
 defaultOption.value = '';
@@ -100,10 +101,26 @@ jsonData.goods.forEach(item => {
 });
 
 li.appendChild(selectElement);
-const inputElement = document.createElement('input');
-inputElement.type = 'number';
-inputElement.id = 'good_count_1';
-li.appendChild(inputElement);
+// количество этих товаров в заказе
+const good_count_input_element = document.createElement('input');
+good_count_input_element.type = 'number';
+good_count_input_element.id = 'good_count_1';
+good_count_input_element.placeholder="Кол-во"
+li.appendChild(good_count_input_element);
+
+// сумма аренды по этим товарам
+const good_price_input_element = document.createElement('input');
+good_price_input_element.type = 'number';
+good_price_input_element.id = 'good_price_1';
+good_price_input_element.placeholder="Аренда"
+li.appendChild(good_price_input_element);
+
+// количество этих товаров в заказе
+const good_deposit_input_element = document.createElement('input');
+good_deposit_input_element.type = 'number';
+good_deposit_input_element.id = 'good_deposit_1';
+good_deposit_input_element.placeholder="Залог"
+li.appendChild(good_deposit_input_element);
 
   })
   .catch(error => console.error('Error:', error));
