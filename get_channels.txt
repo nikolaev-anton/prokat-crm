@@ -1,4 +1,4 @@
-1. select id,name from STATUS
+1. select id,name from CHANNELS
 
 2. возвращаю результат
-json: ("error" => false, "statuses":[{"id":"0","name":"ожидает"},...])
+json: ("error" => false, "channels":[{"id":"0","name":"сайт"},...])
