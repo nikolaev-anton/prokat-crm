@@ -3,56 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Order Form</title>
-<link rel="stylesheet" type="text/css" href="create_order_form.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f0f0f0;
-            text-align: center;
-        }
-        form {
-            max-width: 500px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        ul {
-            list-style-type: none;
-            margin: 10px 0;
-            padding: 0;
-        }
-        select,
-        input[type="text"],
-        input[type="tel"],
-        input[type="number"],
-        input[type="date"] {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        input[type="button"] {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            margin-top: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        input[type="button"]:hover {
-            background-color: #0056b3;
-        }
-        #output {
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="create_order_form.css">
 </head>
 <body>
     <form action="https://prokat-palatok.ru/crm2/create_order.php" method="GET" id="form">
@@ -73,58 +24,13 @@
             <li><input type="button" value="Submit Form" onclick="submitForm()"></li>
         </ul>
     </form>
-    <script type="text/javascript" src="submit_form.js"></script>
+    <script type="text/javascript" src="create_order_form.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
     <script> $(document).ready(function() { $('#phone1').inputmask({ mask: '+7 (999) 999-99-99', placeholder: '_'}); }); </script>
     <script> $(document).ready(function() { $('#phone2').inputmask({ mask: '+7 (999) 999-99-99', placeholder: '_'}); }); </script>
     <script> $(document).ready(function() { $('#phone3').inputmask({ mask: '+7 (999) 999-99-99', placeholder: '_'}); }); </script>
-
-<script>
-// создание элемента SELECT по выдаче товаров из MODELS и их id
-fetch('https://prokat-palatok.ru/crm2/get_goods.php')
-  .then(response => response.json())
-  .then(data => {
-const jsonData = data;
-const li = document.getElementById('goods_li');
-const selectElement = document.createElement('select');
-selectElement.id = 'good_1';
-const defaultOption = document.createElement('option');
-defaultOption.text = 'Выберите товар';
-defaultOption.value = '';
-selectElement.add(defaultOption);
-jsonData.goods.forEach(item => {
-  const optionElement = document.createElement('option');
-  optionElement.value = item.id;
-  optionElement.text = item.name;
-  selectElement.appendChild(optionElement);
-});
-
-li.appendChild(selectElement);
-// количество этих товаров в заказе
-const good_count_input_element = document.createElement('input');
-good_count_input_element.type = 'number';
-good_count_input_element.id = 'good_count_1';
-good_count_input_element.placeholder="Кол-во"
-li.appendChild(good_count_input_element);
-
-// сумма аренды по этим товарам
-const good_price_input_element = document.createElement('input');
-good_price_input_element.type = 'number';
-good_price_input_element.id = 'good_price_1';
-good_price_input_element.placeholder="Аренда"
-li.appendChild(good_price_input_element);
-
-// количество этих товаров в заказе
-const good_deposit_input_element = document.createElement('input');
-good_deposit_input_element.type = 'number';
-good_deposit_input_element.id = 'good_deposit_1';
-good_deposit_input_element.placeholder="Залог"
-li.appendChild(good_deposit_input_element);
-
-  })
-  .catch(error => console.error('Error:', error));
-</script>
+    <script>create_goods_select_inputs();</script>
 
     <p id="output"></p>
 </body>
