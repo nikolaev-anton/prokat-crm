@@ -1,3 +1,6 @@
+// Глобальная переменная
+var goods_number = 2;
+
 function goodsToJson() {
     const goods = [];
     
@@ -125,8 +128,8 @@ return(0);
 }
 
 function handleAddButtonClick() {
-  let i = 3; // начальное значение i
-  create_goods_select_inputs(i);
-  i++; // увеличение значения i
+//  let i = 3; // начальное значение i
+  create_goods_select_inputs(goods_number+1);
+  goods_number++; // увеличение значения счетчика
   return(0);
 }
