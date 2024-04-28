@@ -8,19 +8,19 @@
 <body>
     <form action="https://prokat-palatok.ru/crm2/create_order.php" method="GET" id="form">
         <ul id="form_ul">
-            <li>Name: <input type="text" name="name"></li>
-            <li>Phone1: <input type="tel" name="phone1" id="phone1" placeholder="+7 (___) ___-__-__" value="+74957777777"></li>
-            <li>Phone2: <input type="tel" name="phone2" id="phone2" placeholder="+7 (___) ___-__-__"></li>
-            <li>Phone3: <input type="tel" name="phone3" id="phone3" placeholder="+7 (___) ___-__-__"></li>
-            <li>Start Date: <input type="date" name="begin"></li>
-            <li>End Date: <input type="date" name="end"></li>
+            <li>Имя клиента: <input type="text" name="name"></li>
+            <li>Телефон основной: <input type="tel" name="phone1" id="phone1" placeholder="+7 (___) ___-__-__" value="+74957777777"></li>
+            <li>Телефон дополнительный: <input type="tel" name="phone2" id="phone2" placeholder="+7 (___) ___-__-__"></li>
+            <li>Телефон дополнительный: <input type="tel" name="phone3" id="phone3" placeholder="+7 (___) ___-__-__"></li>
+            <li>Дата начала аренды: <input type="date" name="begin"></li>
+            <li>Дата конца аренды: <input type="date" name="end"></li>
+            <label for="give_stock_li">Место выдачи:</label><li id="give_stock_li"/></li>
+            <label for="giver_li">Кто выдает заказ:</label><li id="giver_li"/></li>
+            <label for="take_stock_li">Место возврата:</label><li id="take_stock_li"/></li>
+            <label for="taker_li">Кто принимает заказ:</label><li id="taker_li"/></li>
+            <label for="goods_li">Товары:</label><li id="goods_li"/></li>
             <li>Адрес доставки к клиенту: <input type="text" name="delivery_address_to"></li>
             <li>Адрес доставки от клиента: <input type="text" name="delivery_address_from"></li>
-            <li>Склад выдачи: <input type="number" name="give_stock_id" min="1" step="1" value="1"></li>
-            <li>Кто выдает: <input type="number" name="giver_id" min="1" step="1" value="1"></li>
-            <li>Склад приемки: <input type="number" name="take_stock_id" min="1" step="1" value="1"></li>
-            <li>Кто принимает заказ: <input type="number" name="taker_id" min="1" step="1" value="1"></li>
-            <label for="goods_li">Товары:</label><li id="goods_li"/></li>
             <li><input type="button" value="Submit Form" onclick="submitForm()"></li>
         </ul>
     </form>
@@ -30,7 +30,14 @@
     <script> $(document).ready(function() { $('#phone1').inputmask({ mask: '+7 (999) 999-99-99', placeholder: '_'}); }); </script>
     <script> $(document).ready(function() { $('#phone2').inputmask({ mask: '+7 (999) 999-99-99', placeholder: '_'}); }); </script>
     <script> $(document).ready(function() { $('#phone3').inputmask({ mask: '+7 (999) 999-99-99', placeholder: '_'}); }); </script>
-    <script>create_goods_select_inputs(1);create_goods_select_inputs(2);</script>
+    <script>
+	create_giver_select_input();
+	create_give_stock_select_input();
+	create_taker_select_input();
+	create_take_stock_select_input();
+	create_goods_select_inputs(1);
+	create_goods_select_inputs(2);
+    </script>
 
     <p id="output"></p>
 </body>

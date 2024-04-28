@@ -133,3 +133,119 @@ function handleAddButtonClick() {
   goods_number++; // увеличение значения счетчика
   return(0);
 }
+
+function create_giver_select_input() {
+// создание элемента SELECT по выдаче людей и их id из EMPLOYEES
+fetch('https://prokat-palatok.ru/crm2/get_employees.php')
+  .then(response => response.json())
+  .then(data => {
+const jsonData = data;
+const li = document.getElementById('giver_li');
+const selectElement = document.createElement('select');
+selectElement.id = "giver_id";
+selectElement.name = "giver_id";
+
+// создание значения по умолчанию для SELECT
+const defaultOption = document.createElement('option');
+defaultOption.text = 'Выберите сотрудника';
+defaultOption.value = '';
+selectElement.add(defaultOption);
+
+// создание значений для SELECT по списку сотрудников из EMPLOYEES
+jsonData.employees.forEach(item => {
+  const optionElement = document.createElement('option');
+  optionElement.value = item.id;
+  optionElement.text = item.name;
+  selectElement.appendChild(optionElement);
+});
+li.appendChild(selectElement);
+});
+return(0);
+}
+
+function create_taker_select_input() {
+// создание элемента SELECT по выдаче людей и их id из EMPLOYEES
+fetch('https://prokat-palatok.ru/crm2/get_employees.php')
+  .then(response => response.json())
+  .then(data => {
+const jsonData = data;
+const li = document.getElementById('taker_li');
+const selectElement = document.createElement('select');
+selectElement.id = "taker_id";
+selectElement.name = "taker_id";
+
+// создание значения по умолчанию для SELECT
+const defaultOption = document.createElement('option');
+defaultOption.text = 'Выберите сотрудника';
+defaultOption.value = '';
+selectElement.add(defaultOption);
+
+// создание значений для SELECT по списку сотрудников из EMPLOYEES
+jsonData.employees.forEach(item => {
+  const optionElement = document.createElement('option');
+  optionElement.value = item.id;
+  optionElement.text = item.name;
+  selectElement.appendChild(optionElement);
+});
+li.appendChild(selectElement);
+});
+return(0);
+}
+
+function create_give_stock_select_input() {
+// создание элемента SELECT по складам из STOCKS
+fetch('https://prokat-palatok.ru/crm2/get_stocks.php')
+  .then(response => response.json())
+  .then(data => {
+const jsonData = data;
+const li = document.getElementById('give_stock_li');
+const selectElement = document.createElement('select');
+selectElement.id = "give_stock_id";
+selectElement.name = "give_stock_id";
+
+// создание значения по умолчанию для SELECT
+const defaultOption = document.createElement('option');
+defaultOption.text = 'Выберите ПВЗ/склад';
+defaultOption.value = '';
+selectElement.add(defaultOption);
+
+// создание значений для SELECT по списку складов из STOCKS
+jsonData.stocks.forEach(item => {
+  const optionElement = document.createElement('option');
+  optionElement.value = item.id;
+  optionElement.text = item.name;
+  selectElement.appendChild(optionElement);
+});
+li.appendChild(selectElement);
+});
+return(0);
+}
+
+function create_take_stock_select_input() {
+// создание элемента SELECT по складам из STOCKS
+fetch('https://prokat-palatok.ru/crm2/get_stocks.php')
+  .then(response => response.json())
+  .then(data => {
+const jsonData = data;
+const li = document.getElementById('take_stock_li');
+const selectElement = document.createElement('select');
+selectElement.id = "take_stock_id";
+selectElement.name = "take_stock_id";
+
+// создание значения по умолчанию для SELECT
+const defaultOption = document.createElement('option');
+defaultOption.text = 'Выберите ПВЗ/склад';
+defaultOption.value = '';
+selectElement.add(defaultOption);
+
+// создание значений для SELECT по списку складов из STOCKS
+jsonData.stocks.forEach(item => {
+  const optionElement = document.createElement('option');
+  optionElement.value = item.id;
+  optionElement.text = item.name;
+  selectElement.appendChild(optionElement);
+});
+li.appendChild(selectElement);
+});
+return(0);
+}
