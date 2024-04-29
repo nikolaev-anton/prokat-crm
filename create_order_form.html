@@ -18,6 +18,7 @@
             <label for="giver_li">Кто выдает заказ:</label><li id="giver_li"/></li>
             <label for="take_stock_li">Место возврата:</label><li id="take_stock_li"/></li>
             <label for="taker_li">Кто принимает заказ:</label><li id="taker_li"/></li>
+            <label for="channel_li">Откуда поступил заказ - от этого зависит цена:</label><li id="channel_li"/></li>
             <label for="goods_li">Товары:</label><li id="goods_li"/></li>
             <li>Адрес доставки к клиенту: <input type="text" name="delivery_address_to"></li>
             <li>Адрес доставки от клиента: <input type="text" name="delivery_address_from"></li>
@@ -36,6 +37,7 @@
 	create_give_stock_select_input();
 	create_taker_select_input();
 	create_take_stock_select_input();
+	create_channel_select_input();
 	create_goods_select_inputs(1);
 	create_goods_select_inputs(2);
     </script>

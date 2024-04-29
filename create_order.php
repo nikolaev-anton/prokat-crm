@@ -2,7 +2,7 @@
 include 'include.php';
 header('Content-Type: text/html; charset=UTF-8');
 
-$allowed_keys = array("name", "phone1", "phone2", "phone3", "comment", "client_id", "begin", "end", "delivery_address_to", "delivery_address_from", "total_amount", "total_deposit", "giver_id", "taker_id", "give_stock_id", "take_stock_id", "goods");
+$allowed_keys = array("name", "phone1", "phone2", "phone3", "comment", "client_id", "begin", "end", "delivery_address_to", "delivery_address_from", "total_amount", "total_deposit", "giver_id", "taker_id", "give_stock_id", "take_stock_id", "channel_id", "goods");
 
 if (!$db_conection = db_connect()) 
   {
@@ -98,9 +98,6 @@ if (!$order_id)
   {
   finish("get order_id error: ". $key ." ". mysqli_sqlstate($db_conection) . mysqli_error($db_conection),$send_to_frontend=true);
   };
-
-
-
 
 
 //состав заказа - в таблицу MODELS_TO_ORDERS

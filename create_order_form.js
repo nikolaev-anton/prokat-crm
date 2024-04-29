@@ -205,7 +205,7 @@ jsonData.employees.forEach(item => {
 li.appendChild(selectElement);
 });
 return(0);
-}
+} //create_taker_select_input()
 
 function create_give_stock_select_input() {
 // создание элемента SELECT по складам из STOCKS
@@ -234,7 +234,7 @@ jsonData.stocks.forEach(item => {
 li.appendChild(selectElement);
 });
 return(0);
-}
+} //create_give_stock_select_input()
 
 function create_take_stock_select_input() {
 // создание элемента SELECT по складам из STOCKS
@@ -263,4 +263,36 @@ jsonData.stocks.forEach(item => {
 li.appendChild(selectElement);
 });
 return(0);
-}
+} //create_take_stock_select_input()
+
+function create_channel_select_input() {
+// создание элемента SELECT по выдаче людей и их id из EMPLOYEES
+fetch('https://prokat-palatok.ru/crm2/get_channels.php')
+  .then(response => response.json())
+  .then(data => {
+const jsonData = data;
+const li = document.getElementById('channel_li');
+const selectElement = document.createElement('select');
+selectElement.id = "channel_id";
+selectElement.name = "channel_id";
+
+// создание значения по умолчанию для SELECT
+const defaultOption = document.createElement('option');
+//defaultOption.text = 'Откуда поступил заказ';
+//defaultOption.value = '0';
+defaultOption.text = 'Выберите канал продаж';
+defaultOption.value = '0';
+selectElement.add(defaultOption);
+
+// создание значений для SELECT по списку из channels
+jsonData.channels.forEach(item => {
+  const optionElement = document.createElement('option');
+  optionElement.value = item.id;
+  optionElement.text = item.name;
+  selectElement.appendChild(optionElement);
+});
+li.appendChild(selectElement);
+});
+return(0);
+} //create_channel_select_input()
+
