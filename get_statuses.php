@@ -1,6 +1,7 @@
 <?php
 include 'include.php';
-header('Content-Type: application/json; charset=UTF-8');
+//header('Content-Type: application/json; charset=UTF-8');
+header('Content-Type: text/html; charset=UTF-8');
 
 $response = "";
 
@@ -30,6 +31,8 @@ mysqli_close($db_conection);
 //возвращаю результат
 $response_array = array("error" => false, "statuses" => $statuses);
 echo json_encode($response_array, JSON_UNESCAPED_UNICODE);
+
+
 
 ?>
 
