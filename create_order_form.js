@@ -1,4 +1,4 @@
-// Глобальная переменная
+// Глобальная переменная - изначальное количество полей для ввода товаров
 var goods_number = 2;
 
 function goodsToJson() {
@@ -47,7 +47,7 @@ function submitForm() {
     json["goods"] = goods;
 
     // вывод JSON в конце экрана
-    document.getElementById('output').textContent = JSON.stringify(json);
+//    document.getElementById('output').textContent = JSON.stringify(json);
 
     const url = `https://prokat-palatok.ru/crm2/create_order.php?request=${JSON.stringify(json)}`;
     console.log(url);
@@ -59,20 +59,27 @@ function submitForm() {
     })
     .then(response => {
       if (response.ok) {
-        return response.text();
+//        return response.text();
+        return response.json();
       } else {
         throw new Error('Failed to send GET request');
       }
     })
-    .then(text => {
-
-console.log(text);
-document.getElementById('output').textContent = text;
+//    .then(text => {
+    .then(data => {
+      const jsonData = data;    
+console.log(JSON.stringify(data));
+      if(jsonData["error"]==true) {
+      document.getElementById('output').textContent = jsonData["error_text"];
+      } else {
+      document.getElementById('output').textContent = "Создан заказ №" + jsonData["order_id"];
+      document.getElementById("form").reset();
+      }
     })
     .catch(error => {
       console.error(error);
     });
-}
+} //submitForm()
 
 
 function create_goods_select_inputs(i) {
@@ -156,7 +163,7 @@ selectElement.name = "giver_id";
 // создание значения по умолчанию для SELECT
 const defaultOption = document.createElement('option');
 defaultOption.text = 'Выберите сотрудника';
-defaultOption.value = '';
+defaultOption.value = '0';
 selectElement.add(defaultOption);
 
 // создание значений для SELECT по списку сотрудников из EMPLOYEES
@@ -185,7 +192,7 @@ selectElement.name = "taker_id";
 // создание значения по умолчанию для SELECT
 const defaultOption = document.createElement('option');
 defaultOption.text = 'Выберите сотрудника';
-defaultOption.value = '';
+defaultOption.value = '0';
 selectElement.add(defaultOption);
 
 // создание значений для SELECT по списку сотрудников из EMPLOYEES
@@ -214,7 +221,7 @@ selectElement.name = "give_stock_id";
 // создание значения по умолчанию для SELECT
 const defaultOption = document.createElement('option');
 defaultOption.text = 'Выберите ПВЗ/склад';
-defaultOption.value = '';
+defaultOption.value = '0';
 selectElement.add(defaultOption);
 
 // создание значений для SELECT по списку складов из STOCKS
@@ -243,7 +250,7 @@ selectElement.name = "take_stock_id";
 // создание значения по умолчанию для SELECT
 const defaultOption = document.createElement('option');
 defaultOption.text = 'Выберите ПВЗ/склад';
-defaultOption.value = '';
+defaultOption.value = '0';
 selectElement.add(defaultOption);
 
 // создание значений для SELECT по списку складов из STOCKS

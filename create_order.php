@@ -9,7 +9,7 @@ if (!$db_conection = db_connect())
   finish("db_connect failed" . mysqli_sqlstate($db_conection) . mysqli_error($db_conection),$send_to_frontend=true);
   }
 
-//получение запроса, парсинг json в array
+//РїРѕР»СѓС‡РµРЅРёРµ Р·Р°РїСЂРѕСЃР°, РїР°СЂСЃРёРЅРі json РІ array
 $request_json = $_GET["request"];
 $request = json_decode($request_json,true);
 if($json_error <> '')
@@ -17,8 +17,8 @@ if($json_error <> '')
   finish("request json decode error:". $json_error,$send_to_frontend=true);
   }
 
-//поверхностная проверка request
-//реализовать нормальную проверку значений
+//РїРѕРІРµСЂС…РЅРѕСЃС‚РЅР°СЏ РїСЂРѕРІРµСЂРєР° request
+//СЂРµР°Р»РёР·РѕРІР°С‚СЊ РЅРѕСЂРјР°Р»СЊРЅСѓСЋ РїСЂРѕРІРµСЂРєСѓ Р·РЅР°С‡РµРЅРёР№
 foreach(array_keys($request) as $key)
   {
   if(!in_array($key, $allowed_keys))
@@ -27,7 +27,7 @@ foreach(array_keys($request) as $key)
     }
   }
 
-//поиск клиента или создание нового
+//РїРѕРёСЃРє РєР»РёРµРЅС‚Р° РёР»Рё СЃРѕР·РґР°РЅРёРµ РЅРѕРІРѕРіРѕ
 if(empty($request["phone1"]) && empty($request["phone2"]) && empty($request["phone3"]))
   {
   finish("find/create client failed - phones are empty",$send_to_frontend=true);
@@ -54,25 +54,27 @@ if(empty($client_id))
 
 
 
-//создание заказа в таблице ORDERS
+//СЃРѕР·РґР°РЅРёРµ Р·Р°РєР°Р·Р° РІ С‚Р°Р±Р»РёС†Рµ ORDERS
 $request_copy = $request;
 $request_copy["client_id"] = $client_id;
 // defaults
 if(empty($request_copy["giver_id"])) {$request_copy["giver_id"] = 1;}
 if(empty($request_copy["taker_id"])) {$request_copy["taker_id"] = 1;}
-if(empty($request_copy["give_stock_id"])) {$request_copy["give_stock_id"] = 1;}
-if(empty($request_copy["take_stock_id"])) {$request_copy["take_stock_id"] = 1;}
+//if(empty($request_copy["give_stock_id"])) {$request_copy["give_stock_id"] = 1;}
+//if(empty($request_copy["take_stock_id"])) {$request_copy["take_stock_id"] = 0;}
 
-
-
+if(empty($request_copy["begin"])) {  finish("Р—Р°РєР°Р· РЅРµ СЃРѕР·РґР°РЅ: РґР°С‚Р° РЅР°С‡Р°Р»Р° Р°СЂРµРЅРґС‹ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ СѓРєР°Р·Р°РЅР°",$send_to_frontend=true);}
+if(empty($request_copy["end"])) {  finish("Р—Р°РєР°Р· РЅРµ СЃРѕР·РґР°РЅ: РґР°С‚Р° РєРѕРЅС†Р° Р°СЂРµРЅРґС‹ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ СѓРєР°Р·Р°РЅР°",$send_to_frontend=true);}
+if(empty($request_copy["goods"])) {  finish("Р—Р°РєР°Р· РЅРµ СЃРѕР·РґР°РЅ: РІС‹Р±РµСЂРёС‚Рµ С…РѕС‚СЏ Р±С‹ РѕРґРёРЅ С‚РѕРІР°СЂ",$send_to_frontend=true);}
+if($request_copy["give_stock_id"]==0) {  finish("Р—Р°РєР°Р· РЅРµ СЃРѕР·РґР°РЅ: РіРґРµ РєР»РёРµРЅС‚ Р±СѓРґРµС‚ РїРѕР»СѓС‡Р°С‚СЊ Р·Р°РєР°Р·?",$send_to_frontend=true);}
+log_error($request_copy["give_stock_id"]);
 
 $columns = array();
 $values = array();
-// поля из входящего JSON, которые можно как есть пихать в БД
+// РїРѕР»СЏ РёР· РІС…РѕРґСЏС‰РµРіРѕ JSON, РєРѕС‚РѕСЂС‹Рµ РјРѕР¶РЅРѕ РєР°Рє РµСЃС‚СЊ РїРёС…Р°С‚СЊ РІ Р‘Р”
 $ORDERS_keys = array("comment", "client_id", "begin", "end", "delivery_address_to", "delivery_address_from", "total_amount", "total_deposit", "giver_id", "taker_id", "give_stock_id", "take_stock_id");
 foreach ($request_copy as $key => $value) 
   {
-//log_error($key."=".$value);
   if (in_array($key, $ORDERS_keys)) 
     {
     $columns[] = $key;
@@ -81,11 +83,8 @@ foreach ($request_copy as $key => $value)
   }
 
 
-
-
 $sql = "INSERT INTO ORDERS (".implode(", ", $columns).") VALUES ('".implode("', '", $values)."')";
-
-//log_error($sql);
+log_error($sql);
 
 $result = mysqli_query($db_conection, $sql);
 if (!$result) 
@@ -93,10 +92,7 @@ if (!$result)
   finish("insert into ORDERS error: ". $key ." ". mysqli_sqlstate($db_conection) . mysqli_error($db_conection),$send_to_frontend=true);
   };
 
-
-
-
-//получаю order_id из автоинкремента
+//РїРѕР»СѓС‡Р°СЋ order_id РёР· Р°РІС‚РѕРёРЅРєСЂРµРјРµРЅС‚Р°
 $order_id = mysqli_insert_id($db_conection);
 if (!$order_id) 
   {
@@ -107,8 +103,8 @@ if (!$order_id)
 
 
 
-//состав заказа - в таблицу MODELS_TO_ORDERS
-// поля из входящего JSON, которые можно пихать в БД (MODELS_TO_ORDERS)
+//СЃРѕСЃС‚Р°РІ Р·Р°РєР°Р·Р° - РІ С‚Р°Р±Р»РёС†Сѓ MODELS_TO_ORDERS
+// РїРѕР»СЏ РёР· РІС…РѕРґСЏС‰РµРіРѕ JSON, РєРѕС‚РѕСЂС‹Рµ РјРѕР¶РЅРѕ РїРёС…Р°С‚СЊ РІ Р‘Р” (MODELS_TO_ORDERS)
 $MODELS_TO_ORDERS_keys = array("model_id", "count", "price", "deposit");
 $request_copy = $request;
 foreach ($request_copy["goods"] as $good) 
@@ -135,7 +131,7 @@ foreach ($request_copy["goods"] as $good)
   }
 
 mysqli_close($db_conection);
-//возвращаю результат
+//РІРѕР·РІСЂР°С‰Р°СЋ СЂРµР·СѓР»СЊС‚Р°С‚
 $response_array = array("error" => false, "order_id" => $order_id);
 echo json_encode($response_array);
 
