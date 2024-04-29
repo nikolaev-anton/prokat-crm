@@ -6,7 +6,7 @@ $allowed_keys = array("name", "phone1", "phone2", "phone3", "comment", "client_i
 
 if (!$db_conection = db_connect()) 
   {
-  finish("db_connect failed" . mysqli_sqlstate($db_conection) . mysqli_error($db_conection));
+  finish("db_connect failed" . mysqli_sqlstate($db_conection) . mysqli_error($db_conection),$send_to_frontend=true);
   }
 
 //получение запроса, парсинг json в array
@@ -14,7 +14,7 @@ $request_json = $_GET["request"];
 $request = json_decode($request_json,true);
 if($json_error <> '')
   {
-  finish("request json decode error:". $json_error);
+  finish("request json decode error:". $json_error,$send_to_frontend=true);
   }
 
 //поверхностная проверка request
@@ -23,14 +23,14 @@ foreach(array_keys($request) as $key)
   {
   if(!in_array($key, $allowed_keys))
     {
-    finish("wrong request json format. key=".$key." is not in allowed list");
+    finish("wrong request json format. key=".$key." is not in allowed list",$send_to_frontend=true);
     }
   }
 
 //поиск клиента или создание нового
 if(empty($request["phone1"]) && empty($request["phone2"]) && empty($request["phone3"]))
   {
-  finish("find/create client failed - phones are empty");
+  finish("find/create client failed - phones are empty",$send_to_frontend=true);
   }
 
 
@@ -49,7 +49,7 @@ if(empty($client_id))
   };
 if(empty($client_id))
   {
-  finish("find/create client failed");
+  finish("find/create client failed",$send_to_frontend=true);
   }
 
 
@@ -90,7 +90,7 @@ $sql = "INSERT INTO ORDERS (".implode(", ", $columns).") VALUES ('".implode("', 
 $result = mysqli_query($db_conection, $sql);
 if (!$result) 
   {
-  finish("insert into ORDERS error: ". $key ." ". mysqli_sqlstate($db_conection) . mysqli_error($db_conection));
+  finish("insert into ORDERS error: ". $key ." ". mysqli_sqlstate($db_conection) . mysqli_error($db_conection),$send_to_frontend=true);
   };
 
 
@@ -100,16 +100,9 @@ if (!$result)
 $order_id = mysqli_insert_id($db_conection);
 if (!$order_id) 
   {
-  finish("get order_id error: ". $key ." ". mysqli_sqlstate($db_conection) . mysqli_error($db_conection));
+  finish("get order_id error: ". $key ." ". mysqli_sqlstate($db_conection) . mysqli_error($db_conection),$send_to_frontend=true);
   };
 
-
-
-
-$request_copy = $request;
-//log_error(json_encode($request_copy));
-//log_error(json_encode($request_copy["goods"]));
-//log_error(implode('|',$request_copy["goods"]));	  
 
 
 
@@ -117,19 +110,13 @@ $request_copy = $request;
 //состав заказа - в таблицу MODELS_TO_ORDERS
 // поля из входящего JSON, которые можно пихать в БД (MODELS_TO_ORDERS)
 $MODELS_TO_ORDERS_keys = array("model_id", "count", "price", "deposit");
-ob_start(); // Включаем буферизацию вывода
-var_dump($request_copy["goods"]); // Выводим результат var_dump() в буфере
-$s = ob_get_clean(); // Получаем содержимое буфера и сохраняем в переменной $s
-log_error($s);
-
+$request_copy = $request;
 foreach ($request_copy["goods"] as $good) 
   {
   $columns = array();
   $values = array();
-//log_error(var_dump($good));
   foreach ($good as $key => $value) 
     {
-//log_error($key."=".$value);
     if (in_array($key, $MODELS_TO_ORDERS_keys)) 
       {
       $columns[] = $key;
@@ -139,12 +126,11 @@ foreach ($request_copy["goods"] as $good)
   $columns[] = "order_id";
   $values[] = $order_id;
   $sql = "INSERT INTO MODELS_TO_ORDERS (".implode(", ", $columns).") VALUES ('".implode("', '", $values)."')";
-  //log_error($sql);
 
   $result = mysqli_query($db_conection, $sql);
   if (!$result) 
     {
-    finish("insert into MODELS_TO_ORDERS error: ". $key ." ". mysqli_sqlstate($db_conection) . mysqli_error($db_conection));
+    finish("insert into MODELS_TO_ORDERS error: ". $key ." ". mysqli_sqlstate($db_conection) . mysqli_error($db_conection),$send_to_frontend=true);
     };
   }
 
