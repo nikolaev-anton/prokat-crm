@@ -72,7 +72,7 @@ log_error($request_copy["give_stock_id"]);
 $columns = array();
 $values = array();
 // поля из входящего JSON, которые можно как есть пихать в БД
-$ORDERS_keys = array("comment", "client_id", "begin", "end", "delivery_address_to", "delivery_address_from", "total_amount", "total_deposit", "giver_id", "taker_id", "give_stock_id", "take_stock_id");
+$ORDERS_keys = array("comment", "client_id", "begin", "end", "delivery_address_to", "delivery_address_from", "total_amount", "total_deposit", "giver_id", "taker_id", "give_stock_id", "take_stock_id", "channel_id");
 foreach ($request_copy as $key => $value) 
   {
   if (in_array($key, $ORDERS_keys)) 
