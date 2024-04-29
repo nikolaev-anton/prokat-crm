@@ -64,6 +64,14 @@ function submitForm() {
         throw new Error('Failed to send GET request');
       }
     })
+    .then(text => {
+
+console.log(text);
+document.getElementById('output').textContent = text;
+    })
+    .catch(error => {
+      console.error(error);
+    });
 }
 
 

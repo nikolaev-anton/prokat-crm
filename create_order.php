@@ -2,7 +2,6 @@
 include 'include.php';
 header('Content-Type: text/html; charset=UTF-8');
 
-$response = "";
 $allowed_keys = array("name", "phone1", "phone2", "phone3", "comment", "client_id", "begin", "end", "delivery_address_to", "delivery_address_from", "total_amount", "total_deposit", "giver_id", "taker_id", "give_stock_id", "take_stock_id", "goods");
 
 if (!$db_conection = db_connect()) 
@@ -34,6 +33,7 @@ if(empty($request["phone1"]) && empty($request["phone2"]) && empty($request["pho
   finish("find/create client failed - phones are empty");
   }
 
+
 $client_id = get_client_by_phone($request["phone1"]);
 if(empty($client_id))
   {
@@ -53,6 +53,7 @@ if(empty($client_id))
   }
 
 
+
 //создание заказа в таблице ORDERS
 $request_copy = $request;
 $request_copy["client_id"] = $client_id;
@@ -61,6 +62,9 @@ if(empty($request_copy["giver_id"])) {$request_copy["giver_id"] = 1;}
 if(empty($request_copy["taker_id"])) {$request_copy["taker_id"] = 1;}
 if(empty($request_copy["give_stock_id"])) {$request_copy["give_stock_id"] = 1;}
 if(empty($request_copy["take_stock_id"])) {$request_copy["take_stock_id"] = 1;}
+
+
+
 
 $columns = array();
 $values = array();
@@ -76,6 +80,9 @@ foreach ($request_copy as $key => $value)
     }
   }
 
+
+
+
 $sql = "INSERT INTO ORDERS (".implode(", ", $columns).") VALUES ('".implode("', '", $values)."')";
 
 //log_error($sql);
@@ -86,6 +93,9 @@ if (!$result)
   finish("insert into ORDERS error: ". $key ." ". mysqli_sqlstate($db_conection) . mysqli_error($db_conection));
   };
 
+
+
+
 //получаю order_id из автоинкремента
 $order_id = mysqli_insert_id($db_conection);
 if (!$order_id) 
@@ -93,15 +103,25 @@ if (!$order_id)
   finish("get order_id error: ". $key ." ". mysqli_sqlstate($db_conection) . mysqli_error($db_conection));
   };
 
+
+
+
 $request_copy = $request;
 //log_error(json_encode($request_copy));
 //log_error(json_encode($request_copy["goods"]));
 //log_error(implode('|',$request_copy["goods"]));	  
 
+
+
+
 //состав заказа - в таблицу MODELS_TO_ORDERS
 // поля из входящего JSON, которые можно пихать в БД (MODELS_TO_ORDERS)
 $MODELS_TO_ORDERS_keys = array("model_id", "count", "price", "deposit");
-log_error(var_dump($request_copy["goods"]));
+ob_start(); // Включаем буферизацию вывода
+var_dump($request_copy["goods"]); // Выводим результат var_dump() в буфере
+$s = ob_get_clean(); // Получаем содержимое буфера и сохраняем в переменной $s
+log_error($s);
+
 foreach ($request_copy["goods"] as $good) 
   {
   $columns = array();
@@ -128,42 +148,10 @@ foreach ($request_copy["goods"] as $good)
     };
   }
 
-
-
-
-/*
-foreach($request["goods"] as $good)
-	{
-	$sql = "insert into MODELS_TO_ORDERS( 
-	order_id, 
-	model_id,
-	count, 
-	price, 
-	deposit 
-	)
-	values
-	(".
-	$order_id
-	. ", " . $good["model_id"]
-	. ", " . $good["count"]
-	. ", " . $good["price"]
-	. ", " . $good["deposit"]
-	. ")";
-log_error($sql);	  
-	$result = mysqli_query($db_conection, $sql);
-	if (!$result) 
-	  {
-	  finish("insert into MODELS_TO_ORDERS error: ". $key ." ". mysqli_sqlstate($db_conection) . mysqli_error($db_conection));
-	  };
-	}
-*/
-  
 mysqli_close($db_conection);
 //возвращаю результат
 $response_array = array("error" => false, "order_id" => $order_id);
 echo json_encode($response_array);
-
-log_error(json_encode($response_array));
 
 
 ?>

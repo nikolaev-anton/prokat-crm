@@ -21,8 +21,9 @@
             <label for="goods_li">Товары:</label><li id="goods_li"/></li>
             <li>Адрес доставки к клиенту: <input type="text" name="delivery_address_to"></li>
             <li>Адрес доставки от клиента: <input type="text" name="delivery_address_from"></li>
-            <li><input type="button" value="Submit Form" onclick="submitForm()"></li>
+            <li><input type="button" value="Создать заказ" onclick="submitForm()"></li>
         </ul>
+        <p id="output"></p>
     </form>
     <script type="text/javascript" src="create_order_form.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -38,7 +39,5 @@
 	create_goods_select_inputs(1);
 	create_goods_select_inputs(2);
     </script>
-
-    <p id="output"></p>
 </body>
 </html>
