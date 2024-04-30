@@ -67,7 +67,6 @@ if(empty($request_copy["begin"])) {  finish("Заказ не создан: да�
 if(empty($request_copy["end"])) {  finish("Заказ не создан: дата конца аренды должна быть указана",$send_to_frontend=true);}
 if(empty($request_copy["goods"])) {  finish("Заказ не создан: выберите хотя бы один товар",$send_to_frontend=true);}
 if($request_copy["give_stock_id"]==0) {  finish("Заказ не создан: где клиент будет получать заказ?",$send_to_frontend=true);}
-log_error($request_copy["give_stock_id"]);
 
 $columns = array();
 $values = array();
@@ -84,7 +83,7 @@ foreach ($request_copy as $key => $value)
 
 
 $sql = "INSERT INTO ORDERS (".implode(", ", $columns).") VALUES ('".implode("', '", $values)."')";
-log_error($sql);
+//log_error($sql);
 
 $result = mysqli_query($db_conection, $sql);
 if (!$result) 

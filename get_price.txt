@@ -8,4 +8,4 @@
 select model_id,channel_id,price_for_period,deposit_for_period from PRICELIST where (end-begin) between period_min and period_max --синтаксис упрощен для чтения
 
 7. возвращает результат
-json: ("error" => false, "price":[{"model_id":"1","channel_id":"1","price_for_period":"1500","deposit_for_period":"2000"}]})
+json: {"error" => false, "price":[{"model_id":"1","channel_id":"1","price_for_period":"1500","deposit_for_period":"2000"}]}

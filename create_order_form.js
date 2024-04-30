@@ -1,5 +1,10 @@
+'use strict';
+
 // Глобальная переменная - изначальное количество полей для ввода товаров
 var goods_number = 2;
+
+// массив всех элементов в выборе товаров
+var goods_inputs = [];
 
 function goodsToJson() {
     const goods = [];
@@ -28,8 +33,7 @@ function goodsToJson() {
         goods.push(item);
     });
     
-    // выводим и возвращаем JSON
-//    console.log(JSON.stringify(goods));
+    // возвращаем JSON
     return(goods);
 }
 
@@ -59,13 +63,11 @@ function submitForm() {
     })
     .then(response => {
       if (response.ok) {
-//        return response.text();
         return response.json();
       } else {
         throw new Error('Failed to send GET request');
       }
     })
-//    .then(text => {
     .then(data => {
       const jsonData = data;    
 console.log(JSON.stringify(data));
@@ -91,6 +93,9 @@ const jsonData = data;
 const li = document.getElementById('goods_li');
 const selectElement = document.createElement('select');
 selectElement.id = `good_${i}`;
+selectElement.addEventListener('change', function() {
+  get_price_deposit(this.value);
+});
 const defaultOption = document.createElement('option');
 defaultOption.text = 'Выберите товар';
 defaultOption.value = '';
@@ -108,6 +113,9 @@ const good_count_input_element = document.createElement('input');
 good_count_input_element.type = 'number';
 good_count_input_element.id = `good_count_${i}`;
 good_count_input_element.placeholder="Кол-во"
+good_count_input_element.addEventListener('change', function() {
+  get_price_deposit(document.getElementById(`good_${i}`).value);
+});
 li.appendChild(good_count_input_element);
 
 // сумма аренды по этим товарам
@@ -133,17 +141,25 @@ li.appendChild(good_plus_button);
 good_plus_button.addEventListener("click", function(event) {
     // Предотвращаем отправку формы
     event.preventDefault();
-//    console.log("Клик на кнопку good_plus_button_1");
     handleAddButtonClick();
 });
 
+goods_inputs.push([i, {
+select: selectElement,
+countInput: good_count_input_element,
+priceInput: good_price_input_element,
+depositInput: good_price_input_element
+}]);
+
+
   })
   .catch(error => console.error('Error:', error));
+
+console.log(goods_inputs);
 return(0);
 }
 
 function handleAddButtonClick() {
-//  let i = 3; // начальное значение i
   create_goods_select_inputs(goods_number+1);
   goods_number++; // увеличение значения счетчика
   return(0);
@@ -296,3 +312,44 @@ li.appendChild(selectElement);
 return(0);
 } //create_channel_select_input()
 
+
+
+function get_price_deposit(model_id) {
+// изменение good_price_*,  good_deposit_* при изменении товара/количества/дат
+
+//console.log("model_id=" + model_id);
+
+const json = {};
+json["model_id"] = model_id;
+const channel_select_element = document.getElementById('channel_id');
+json["channel_id"] = channel_select_element.value;
+json["begin"] = "01.05.2024";
+json["end"] = "02.05.2024";
+
+console.log(JSON.stringify(json));
+
+fetch('https://prokat-palatok.ru/crm2/get_price.php?request=' + JSON.stringify(json))
+  .then(response => response.json())
+  .then(data => {
+const jsonData = data;
+console.log(JSON.stringify(data));
+
+});
+return(0);
+} //get_price_deposit()
+
+/*
+function set_goods_change_listeners() {
+console.log("set_goods_change_listeners()");
+
+document.getElementById("good_1").addEventListener("change", function() {
+  var selectedValue = this.value; // Получаем выбранное значение элемента <select>
+  get_price_deposit(selectedValue); // Вызываем функцию get_price_deposit() с выбранным значением
+});
+
+document.getElementById("good_count_1").addEventListener("change", function() {
+  var selectedValue = getElementById("good_1").value; // Получаем выбранное значение элемента <select>
+  get_price_deposit(selectedValue); // Вызываем функцию get_price_deposit() с выбранным значением
+});
+} //set_goods_change_listeners()
+*/

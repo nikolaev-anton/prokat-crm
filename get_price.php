@@ -28,13 +28,11 @@ foreach(array_keys($request) as $key)
     }
   }
 
- 
 $sql = "select model_id,channel_id,price_for_period,deposit_for_period from PRICELIST
 where 1=1 
 and model_id='".$request["model_id"]."' 
 and channel_id='".$request["channel_id"]."' 
 and datediff(DATE(STR_TO_DATE('" . $request["end"] . "', '%d.%m.%Y %H:%i:%s')), DATE(STR_TO_DATE('" . $request["begin"] . "', '%d.%m.%Y %H:%i:%s'))) between period_min and period_max";
-
 
 //получение цен из PRICELIST
 $result = mysqli_query($db_conection, $sql);
@@ -45,7 +43,7 @@ if (!$result)
 
 if (mysqli_num_rows($result) == 0)
   {
-  finish("get_price - price not found: ". json_encode($request, JSON_UNESCAPED_UNICODE));
+  finish("get_price - price not found: ". json_encode($request,JSON_UNESCAPED_UNICODE),$send_to_frontend=true);
   };
 
 $price = array();
