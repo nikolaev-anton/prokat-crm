@@ -7,7 +7,7 @@ var goods_number = 2;
 var goods_inputs = [];
 
 function goodsToJson() {
-    const goods = [];
+    var goods = [];
     
     // Получаем все элементы <select> и <input type="number">
     const selectElements = document.querySelectorAll('select[id^="good_"]');
@@ -47,8 +47,9 @@ function submitForm() {
      });
 
     // сбор полей и их значений по товарам вынесен в отдельную функцию
-    goods = goodsToJson();
+    const goods = goodsToJson();
     json["goods"] = goods;
+
 
     // вывод JSON в конце экрана
 //    document.getElementById('output').textContent = JSON.stringify(json);
@@ -155,7 +156,7 @@ depositInput: good_price_input_element
   })
   .catch(error => console.error('Error:', error));
 
-console.log(goods_inputs);
+//console.log(goods_inputs);
 return(0);
 }
 
@@ -326,13 +327,13 @@ json["channel_id"] = channel_select_element.value;
 json["begin"] = "01.05.2024";
 json["end"] = "02.05.2024";
 
-console.log(JSON.stringify(json));
+//console.log(JSON.stringify(json));
 
 fetch('https://prokat-palatok.ru/crm2/get_price.php?request=' + JSON.stringify(json))
   .then(response => response.json())
   .then(data => {
 const jsonData = data;
-console.log(JSON.stringify(data));
+//console.log(JSON.stringify(data));
 
 });
 return(0);
